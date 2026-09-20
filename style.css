@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    height: 50px;
+    background-color: #0e0f11f6;
+    border-bottom: 1.5px solid #aaaaaa;
+}
+
+.btn {
+
+    cursor: pointer;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    background-color: #0E0F11;
+    color: white;
+}
+
+h2 {
+    color: white;
+}
+
+.calender-container {
+    gap: 35px;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0E0F11;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.calender {
+    margin-top: 20px;
+    padding: 25px;
+    background-color: #201f1f;
+    border-radius: 10px;
+    border: solid 1.5px rgb(255, 72, 0);
+}
+
+.calender-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 25px;
+}
+
+.text {
+    color: #E2E8F0;
+}
+
+span {
+    font-size: 20px;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 100px);
+    gap: 5px;
+}
+
+.days-boxes {
+    height: 100px;
+    padding: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: solid 1px #aaaaaa;
+}
+
+.days-boxes:hover {
+    background-color: #aa2c28ab;
+}
+
+.selected {
+    color: rgb(2, 0, 0);
+    background-color: #aa2c28;
+    border: solid 1px #ff0000;
+}
+
+.selected:hover {
+    background-color: #aa2c28;
+}
+
+.tasks-container {
+    background-color: blue;
+}
+
+.tasks {
+    margin-top: 20px;
+    padding: 25px;
+    background-color: #201f1f;
+    border-radius: 10px;
+    border: solid 1.5px rgb(255, 72, 0);
+}
+
+.tasks-header {
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+}
