@@ -4,23 +4,47 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: Sans-Serif;
+}
+
 header {
-    height: 50px;
-    background-color: #0e0f11f6;
-    border-bottom: 1.5px solid #aaaaaa;
+    height: 40px;
+    background-color: #160038;
+    border-bottom: solid 1.5px #5f00b8;
 }
 
 .btn {
     border-radius: 6px;
     width: 80px;
-    height: 30px;
+    height: 100%;
     cursor: pointer;
+}
+
+.header-btn-container {
+    display: flex;
+    border: solid 1px #5f00b8;
+    border-radius: 8px;
+    width: 25%;
+    height: 100%;
+}
+
+.header-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    color: white;
+}
+
+.header-btn:hover {
+    color: #8400ff;
 }
 
 h1 {
     display: flex;
     justify-content: center;
-    background-color: #0E0F11;
+    background-color: #160038;
     color: white;
 }
 
@@ -28,28 +52,41 @@ h2 {
     color: white;
 }
 
-.calender-container {
+.calendar-container {
     gap: 35px;
     width: 100vw;
     height: 100vh;
-    background-color: #0E0F11;
+    background: linear-gradient(to top, #0b0214, #160038);
     display: flex;
     justify-content: center;
     align-items: flex-start;  
 }
 
-.calender {
+.calendar {
     margin-top: 20px;
     padding: 25px;
-    background-color: #201f1f;
+    background: linear-gradient(to bottom, rgb(32, 0, 51), rgb(15, 0, 26));
     border-radius: 10px;
-    border: solid 1.5px rgb(255, 72, 0);
+    box-shadow: 3px 3px 5px #0b0016;
 }
 
-.calender-header {
+.calendar-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.calender-header-btn {
+    width: 30px;
+    font-size: 15px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+}
+
+.calender-header-btn:hover {
+    background-color: rgb(73, 0, 116);
 }
 
 .week-days {
@@ -78,35 +115,34 @@ span {
     padding: 4px;
     border-radius: 5px;
     cursor: pointer;
-    border: solid 1px #aaaaaa;
+    border: solid 1px #7540a8;
 }
 
 .days-boxes:hover {
-    background-color: #aa2c28ab;
+    color: white;
+    background-color: #5f00b84d;
+    border: solid 1px #5f00b8;
 }
 
 .selected {
-    color: rgb(2, 0, 0);
-    background-color: #aa2c28;
-    border: solid 1px #ff0000;
+    color: white;
+    background-color: #5f00b8;
 }
 
 .selected:hover {
-    background-color: #aa2c28;
-}
-
-.tasks-container {
-    background-color: blue;
+    background-color: #5f00b8;
+    border: solid 1px #8400ff;
 }
 
 .tasks {
+    height: 650px;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
     padding: 25px;
-    background-color: #201f1f;
+    background: linear-gradient(to bottom, rgb(32, 0, 51), rgb(15, 0, 26));
     border-radius: 10px;
-    border: solid 1.5px rgb(255, 72, 0);
+    box-shadow: 3px 3px 5px #0b0016;
 }
 
 .tasks-top {
@@ -116,12 +152,94 @@ span {
 }
 
 .tasks-header {
-    
+    border-bottom: solid 1.5px #5f00b8;
 }
 
 .tasksbtn {
     border-radius: 6px;
     background-color: transparent;
     color: #E2E8F0;
-    border: solid 1.5px rgb(255, 72, 0);
+    border: solid 1px #7540a8;
+}
+
+.tasksbtn:hover {
+    border: solid 1px #5f00b8;
+}
+
+.chart-div {
+    font-size: clamp(1vw, 4vw, 4vw);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: solid 1px #8400ff;
+    color: #8400ff;
+    background-color: #160038;
+    cursor: pointer;
+}
+
+.chronometer-container {
+    gap: 35px;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to top, #0b0214, #160038);
+    display: flex;
+    flex-direction: column;
+}
+
+.chronometer-div {
+    display: flex;
+    justify-content: center;
+    font-size: 200px;
+}
+
+.chronometer-div-input {
+    display: flex;
+    justify-content: center;
+}
+
+.chronometer-input {
+    width: clamp(30vw, 30vw, 30vw);
+    height: clamp(2.5vw, 1vw, 1vw);
+    padding: 4px 14px;
+    border: solid 1px #8400ff;
+    border-radius: 18px;
+    background-color: #160038;
+    display: flex;
+    font-size: 20px;
+}
+
+.chronometer-div-btn {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.chronometer-div p {
+    font-size: 200px;
+}
+
+.bi-play-fill {
+    font-size: clamp(4vw, 4vw, 4vw);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: solid 1px #8400ff;
+    color: #8400ff;
+    background-color: #160038;
+    cursor: pointer;
+}
+.bi-arrow-clockwise {
+    font-size: clamp(1vw, 4vw, 4vw);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: solid 1px #8400ff;
+    color: #8400ff;
+    background-color: #160038;
+    cursor: pointer;
+}
+
+
+.hide {
+    display: none;
 }
