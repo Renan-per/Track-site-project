@@ -19,7 +19,7 @@
 
     <section class="calendar-section section">
         <h1>Calendar</h1>
-        <div class="calendar-container">
+        <div class="calendar-container container">
             <div class="calendar">
                 <div class="calendar-header">
                     <button class="calender-header-btn bi bi-caret-left-fill"></button>
@@ -63,23 +63,29 @@
 
     <section class="chart-section section hide">
         <h1>Chart</h1>
-        <div class="chart-container">
-            <div class="chart-div"></div>
+        <div class="chart-container container">
+            <div class="pie-chart-container">
+                <h1>110h 8min</h1>
+                <figure>
+                    <div class="pie"></div>
+                </figure>
+            </div>
+            
         </div>
     </section>
 
     <section class="chronometer-section section hide">
         <h1>Chronometer</h1>
-        <div class="chronometer-container">
+        <div class="chronometer-container container">
             <div class="chronometer-div">
-                <p class="text">00:00:00.00</p>
+                <p class="text">00:00:00</p>
             </div>
             <div class="chronometer-div-input">
                 <input class="text chronometer-input" type="text" placeholder="Type the current activity">
             </div>
             <div class="chronometer-div-btn">
-                <button class="bi bi-play-fill"></button>
-                <button class="bi bi-arrow-clockwise"></button>             
+                <button onclick="chronometer()" class="bi bi-play-fill chronometer-btn"></button>
+                <button class="bi bi-arrow-clockwise chronometer-btn"></button>             
             </div>
         </div>
     </section>

@@ -8,10 +8,7 @@ const dayOfWeek = date.getDay();
 const headerBtn = document.querySelectorAll(".header-btn")
 const sections = document.querySelectorAll(".section")
 
-const calendarSection = document.querySelector(".calendar-section")
-const chartSection = document.querySelector(".chart-section")
-const chronometerSection = document.querySelector(".chronometer-section")
-
+const insertP = document.querySelector(".chronometer-div p")
 
 const monthNames = {
     0: "January",
@@ -67,27 +64,47 @@ const qNomeDar = document.querySelector(".tasks-header p")
 qNomeDar.textContent = `${getWeekName(dayOfWeek)}, ${day} ${getMonthName(month)}`
 
 function findVisibleSection () {
-    sections.forEach((section, index) => {
-        if (!section.classList.contains("hide")) {
-        }
-    })
-
+    return Array.from(sections).find(section => !section.classList.contains('hide'))
 }
 
 //finish switchSection logic
 function switchSection () {
-    headerBtn.forEach((btn, index) => {
+    headerBtn.forEach((btn, btnIndex) => {
         btn.addEventListener('click', event => {
-            if (index === 0 && calendarSection.classList.contains('hide') ) {
-                calendarSection.classList.add('hide')
+            if (sections[btnIndex].classList.contains('hide')) {
+                findVisibleSection().classList.add('hide')
+                sections[btnIndex].classList.remove('hide')
             }
-            if (index === 1 && chartSection.classList.contains('hide')) {
-                chartSection.classList.remove('hide')
-            }
-
-            else if (index === 2 && chronometerSection.classList.contains('hide')) {
-                chronometerSection.classList.remove('hide')
-            }
+           
         })
     })
+}
+
+let screen = insertP.textContent
+let sec = 0
+let min = 0
+let hour = 0
+
+//finish chronometer logic
+function chronometer () {
+    setInterval(() => {
+        
+        if (sec <= 9) {
+            sec++
+            insertP = "00:00:0" + sec
+        }
+
+        if (sec >= 10) {
+            sec++
+            insertP = "00:00:" + sec
+        }
+
+        if (sec >= 60) {
+            sec = 0
+            min++
+            insertP = "00:" + min + ":00"
+        }
+
+        
+    }, 1000 )
 }

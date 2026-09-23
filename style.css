@@ -5,6 +5,7 @@
 }
 
 body {
+    overflow: auto;
     font-family: Sans-Serif;
 }
 
@@ -52,17 +53,20 @@ h2 {
     color: white;
 }
 
-.calendar-container {
+.container {
     gap: 35px;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
     background: linear-gradient(to top, #0b0214, #160038);
     display: flex;
+}
+
+.calendar-container {
     justify-content: center;
-    align-items: flex-start;  
 }
 
 .calendar {
+    height: 100%;
     margin-top: 20px;
     padding: 25px;
     background: linear-gradient(to bottom, rgb(32, 0, 51), rgb(15, 0, 26));
@@ -166,23 +170,48 @@ span {
     border: solid 1px #5f00b8;
 }
 
-.chart-div {
+.chart-container {
+    display: flex;
+    justify-content: center;
+}
+
+.pie-chart-container {
+    background-color: rgb(32, 0, 51);
+    display: flex;
+    justify-content: row;
+    height: 100%;
+    margin-top: 20px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px #0b0016;
+}
+
+.pie-chart-container h1 {
+    background-color: rgb(32, 0, 51);
+}
+
+.pie {
+    background-image:
+    radial-gradient(
+        rgb(32, 0, 51) 40%,
+        transparent 0 70%,
+        rgb(32, 0, 51) 0
+    ),
+    conic-gradient(
+        red 40%,
+        blue 0 65%,
+        orange 0% 85%,
+        pink 0
+        );
+    margin-top: 20px;
     font-size: clamp(1vw, 4vw, 4vw);
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: solid 1px #8400ff;
+    width: 400px;
+    height: 400px;
     color: #8400ff;
-    background-color: #160038;
     cursor: pointer;
 }
 
 .chronometer-container {
-    gap: 35px;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to top, #0b0214, #160038);
-    display: flex;
     flex-direction: column;
 }
 
@@ -218,18 +247,7 @@ span {
     font-size: 200px;
 }
 
-.bi-play-fill {
-    font-size: clamp(4vw, 4vw, 4vw);
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: solid 1px #8400ff;
-    color: #8400ff;
-    background-color: #160038;
-    cursor: pointer;
-}
-.bi-arrow-clockwise {
-    font-size: clamp(1vw, 4vw, 4vw);
+.chronometer-btn {
     width: 100px;
     height: 100px;
     border-radius: 50%;
@@ -239,6 +257,12 @@ span {
     cursor: pointer;
 }
 
+.bi-play-fill {
+    font-size: clamp(4vw, 4vw, 4vw);
+}
+.bi-arrow-clockwise {
+    font-size: clamp(1vw, 4vw, 4vw);
+}
 
 .hide {
     display: none;
