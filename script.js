@@ -83,3 +83,13 @@ function update () {
 
     display.textContent = `${hours}:${minutes}:${seconds}:${milliseconds}`
 }
+
+const addTaskOverlay = document.querySelector(".add-task-overlay")
+function showAddTaks () {
+    if (addTaskOverlay.classList.contains('hide')) {
+        addTaskOverlay.classList.remove('hide')
+    }
+    else {
+        addTaskOverlay.classList.add('hide')
+    }
+}
