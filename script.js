@@ -1,5 +1,5 @@
 const date = new Date();
-const year = date.getFullYear();
+let year = date.getFullYear();
 const calendarYear = document.querySelector(".calendar-header h2")
 const month = date.getMonth();
 const day = date.getDate();
@@ -8,32 +8,42 @@ const headerBtn = document.querySelectorAll(".header-btn")
 const sections = document.querySelectorAll(".section")
 
 const display = document.querySelector(".chronometer-div p")
-const monthName = date.toLocaleDateString('en-us', { month: 'long' });
-const weekName = date.toLocaleDateString('en-us', { weekday: 'long' });
+let monthName = date.toLocaleDateString('en-us', { month: 'long' });
+let weekName = date.toLocaleDateString('en-us', { weekday: 'long' });
 
 calendarYear.textContent = `${monthName} ${year}`
 
 const days = document.querySelector(".days");
 const numberOfDaysInMonth = new Date(year, month + 1, 0).getDate();
+const tasksHeader = document.querySelector(".tasks-header p")
 
 for (let i = 1; i <= numberOfDaysInMonth; i++) {
     const numberDay = document.createElement("span")
     numberDay.textContent = i
     numberDay.classList.add("days-boxes")
     numberDay.classList.add("text")
+    
+    const newDate = new Date(year, month, i)
+    numberDay.addEventListener("click", () => {
+        const allSpan = document.querySelectorAll(".days-boxes")
+        allSpan.forEach(span => {span.classList.remove('selected')})
+        numberDay.classList.add('selected')
+        monthName = newDate.toLocaleDateString('en-us', { month: 'long' })
+        weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' })
+        tasksHeader.textContent = `${weekName}, ${i} ${monthName}`
+        calendarYear.textContent = `${monthName} ${year}`
+    })
     days.append(numberDay)
     if (i === day) {
         numberDay.classList.add("selected")
+
     }
 }
 
-
-const qNomeDar = document.querySelector(".tasks-header p")
-
-qNomeDar.textContent = `${weekName}, ${day} ${monthName}`
+tasksHeader.textContent = `${weekName}, ${day} ${monthName}`
 
 function findVisibleSection () {
-    return Array.from(sections).find(section => !section.classList.contains('hide'))
+    return [...sections].find(section => !section.classList.contains('hide'))
 }
 
 //finish switchSection logic

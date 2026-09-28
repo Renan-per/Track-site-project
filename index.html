@@ -58,16 +58,26 @@
                             <button onclick="showAddTaks()" class="bi bi-x-lg"></button>
                             <div class="input-buttons-container">
                                 <input class="text input add-task-input" type="text" placeholder="Current activity name">
-                                <input class="text input add-task-input-time" type="text" placeholder="Time" >
+                                <div class="time-dropdown-container">
+                                    <input class="text input add-task-input-time" type="number" placeholder="Time" >
+
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-btn">Studying
+                                            <i class="bi bi-chevron-down"></i>
+                                        </button>
+                                        <div class="content">
+                                            <button class="text">Working</button>
+                                            <button class="text">Sleeping</button>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
 
-                            <div class="dropdown-btn-container">
-                                <button class="btn dropdown-btn">Studying</button>
-                            </div>
+                            
 
                             <div class="action-buttons-container">
-                                <button class="btn action-buttons">Save</button>
-                                <button class="btn action-buttons">Cancel</button>
+                                <button class="btn action-buttons save">Save</button>
+                                <button class="btn action-buttons cancel">Cancel</button>
                             </div>
                         </div>
                     </div>
