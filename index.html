@@ -45,7 +45,7 @@
                     <div class="tasks-top">
                         <div class="tasks-header">
                             <p class="text">Friday, 19 september</p>
-                            <p class="text">8h 55min registred</p>
+                            <p class="text">6h 21min registred</p>
                         </div>
 
                         <div class="tasks-header-btn">
@@ -59,17 +59,17 @@
                             <div class="input-buttons-container">
                                 <input class="text input add-task-input" type="text" placeholder="Current activity name">
                                 <div class="time-dropdown-container">
-                                    <input class="text input add-task-input-time" type="number" placeholder="Time" >
-
-                                    <div class="dropdown">
-                                        <button class="btn dropdown-btn">Studying
-                                            <i class="bi bi-chevron-down"></i>
-                                        </button>
+                                    <input class="text input add-task-input-time" type="number" placeholder="Hours" >
+                                    <input class="text input add-task-input-time" type="number" placeholder="Minutes" >
+                                    <details>
+                                        <summary class="dropdown-btn text">Studying</summary>
                                         <div class="content">
                                             <button class="text">Working</button>
-                                            <button class="text">Sleeping</button>
+                                            <button class="text">Leisure</button>
+                                            <button class="text">Workout</button>
                                         </div>
-                                    </div>
+                                    </details>
+
                                 </div>  
                             </div>
 
@@ -77,13 +77,17 @@
 
                             <div class="action-buttons-container">
                                 <button class="btn action-buttons save">Save</button>
-                                <button class="btn action-buttons cancel">Cancel</button>
+                                <button class="btn action-buttons">Cancel</button>
                             </div>
+                            
                         </div>
                     </div>
 
                     <div class="registred-tasks">
-                        <p class="text">exemplo</p>
+                        <p class="text">Studying</p>
+                        <p class="text">Program 2h 9min</p>
+                        <p class="text">Leisure</p>
+                        <p class="text">Play video games 4h 12min</p>
                     </div>
                 </div>
             </div>
@@ -94,7 +98,7 @@
         <h1>Chart</h1>
         <div class="chart-container container">
             <div class="pie-chart-container">
-                <h1>110h 8min</h1>
+                <h1>6h 21min</h1>
                 <figure>
                     <div class="pie"></div>
                 </figure>
@@ -110,7 +114,7 @@
                 <p class="text">00:00:00:00</p>
             </div>
             <div class="chronometer-div-input">
-                <input class="text input chronometer-input" type="text" placeholder="Type the current activity">
+                <input class="text input chronometer-input" type="text" placeholder="current activity">
             </div>
             <div class="chronometer-div-btn">
                 <button onclick="start()" class="bi bi-play-fill chronometer-btn"></button>

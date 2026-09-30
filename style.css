@@ -74,7 +74,7 @@ h2 {
 }
 
 .calendar {
-    height: 100%;
+    height: 40.5rem;
     margin-top: 20px;
     padding: 25px;
     background: linear-gradient(to bottom, rgb(32, 0, 51), rgb(15, 0, 26));
@@ -151,7 +151,8 @@ span {
 }
 
 .tasks {
-    height: 650px;
+    height: 40.5rem;
+    width: 22rem;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -164,13 +165,19 @@ span {
 .tasks-top {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 35px;
 }
 
-
 .tasksbtn {
-    height: 100%;
+    font-size: 0.9rem;
+    height: 2.5rem;
     background-color: hsl(271, 100%, 45%);
+}
+
+.tasksbtn:hover {
+    background-color: hsl(271, 100%, 30%);
+    color: hsl(214, 32%, 80%);
 }
 
 .registred-tasks {
@@ -195,8 +202,6 @@ span {
     background: linear-gradient(to bottom, rgb(32, 0, 51), rgb(15, 0, 26));
     gap: 10px;
     padding: 30px;
-    width: 25rem;
-    height: 30rempx;
     border-radius: 10px;
     border: solid 1.5px #5f00b8;
     box-shadow: 3px 3px 5px #0b0016;
@@ -221,6 +226,11 @@ span {
     background-color: #ffffff25;
 }
 
+.input-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
 .input {
     display: flex;
@@ -231,20 +241,25 @@ span {
     background-color: transparent;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 .add-task-input {
     width: 20rem;
     height: 3rem;
 }
 
 .add-task-input-time {
-    width: 15rem;
+    width: 7.5rem;
     height: 3rem;
-}
-
-.input-buttons-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 .time-dropdown-container {
@@ -253,23 +268,40 @@ span {
     gap: 10px;
 }
 
-.dropdown {
+.dropdown-btn {
+    position: relative;
+    border: solid 1.5px #5f00b8;
+    height: 3rem;
+    width: 6rem;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 1px hsl(271, 100%, 45%);
+    cursor: pointer;
+}
+
+.content {
+    position: absolute;
     display: flex;
     flex-direction: column;
+    margin-top: 6px;
+    border: solid 1px hsl(271, 100%, 45%);
 }
 
-.dropdown button {
-    padding: 10px 15px;
+.content button {
+    background-color: #160038;
+    height: 3rem;
+    width: 6rem;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
 }
 
-.dropdown .content {
-    position: absolute;
-    background-color: #5f00b8;
-    min-width: 100px;
-}
-
-.dropdown-btn {
-    height: 2.5rem;
+.content button:hover {
+    background-color: hsl(271, 100%, 20%);
 }
 
 .action-buttons-container {
@@ -284,6 +316,11 @@ span {
 
 .save {
     background-color: hsl(271, 100%, 45%);
+}
+
+.save:hover {
+    background-color: hsl(271, 100%, 30%);
+    color: hsl(214, 32%, 80%);
 }
 
 .chart-container {
@@ -379,4 +416,8 @@ span {
 
 .hide {
     display: none;
+}
+
+.spacing {
+    visibility: hidden;
 }
