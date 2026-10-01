@@ -51,20 +51,61 @@ for (let i = 1; i <= numberOfDaysInMonth; i++) {
 
 tasksHeader.textContent = `${weekName}, ${dayOfMonth} ${monthName}`;
 
-const dropdownButton = document.querySelector(".dropdown-btn")
-const allDropdownButtons = document.querySelectorAll(".content button")
+const dropdownButton = document.querySelector(".dropdown-btn");
+const allDropdownButtons = document.querySelectorAll(".content button");
 
 allDropdownButtons.forEach((btn) => {
     btn.addEventListener('click', event => {
-        dropdownButton.textContent = btn.textContent
-    })
-})
+        dropdownButton.textContent = btn.textContent;
+    });
+});
+
+function saveActivity () {
+    const activityNameInput = document.getElementById("activity-name-input")
+    const hours = document.getElementById("hours-input");
+    const minutes = document.getElementById("minutes-input")
+
+    const activity = {
+        "name": activityNameInput.value,
+        "hours": hours.value,
+        "minutes": minutes.value,
+        "classification": dropdownButton.textContent
+    };
+
+    const jsonString = JSON.stringify(activity);
+
+    localStorage.setItem("habit", jsonString)
+    
+    activityNameInput.value = "";
+    hours.value = "";
+    minutes.value = "";
+
+    loadActivity();
+};
+
+function loadActivity () {
+    const registredTasks = document.querySelector('.registred-tasks');
+
+    list = JSON.parse(localStorage.getItem('habit')) || [];
+
+    let p = document.createElement('p');
+    p.classList.add('text');
+    p.textContent = list.classification;
+    registredTasks.append(p);
+
+
+    p = document.createElement('p');
+
+    p.classList.add('text');
+    p.textContent = `${list.name} ${list.hours}h  ${list.minutes}min`;
+    registredTasks.append(p);
+
+};
 
 function findVisibleSection () {
     return [...sections].find(section => !section.classList.contains('hide'));
 }
 
-//finish switchSection logic
 function switchSection () {
     headerButtons.forEach((btn, btnIndex) => {
         btn.addEventListener('click', event => {
@@ -88,7 +129,7 @@ function start () {
         isRunning = true;
     };
 };
-
+//finish clear logic
 function clear () {
     console.log("a")
 }
@@ -119,3 +160,5 @@ function showAddTaks () {
         addTaskOverlay.classList.add('hide');
     };
 };
+
+loadActivity();

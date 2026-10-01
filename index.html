@@ -44,7 +44,7 @@
                 <div class="tasks">
                     <div class="tasks-top">
                         <div class="tasks-header">
-                            <p class="text">Friday, 19 september</p>
+                            <p class="text"></p>
                             <p class="text">6h 21min registred</p>
                         </div>
 
@@ -53,14 +53,18 @@
                         </div>
                     </div>
 
+                    <div class="registred-tasks">
+                        
+                    </div>
+
                     <div class="add-task-overlay hide">
                         <div class="add-task-box">
                             <button onclick="showAddTaks()" class="bi bi-x-lg"></button>
                             <div class="input-buttons-container">
-                                <input class="text input add-task-input" type="text" placeholder="Current activity name">
+                                <input id="activity-name-input" class="text input add-task-input" type="text" placeholder="Current activity name">
                                 <div class="time-dropdown-container">
-                                    <input class="text input add-task-input-time" type="number" placeholder="Hours" >
-                                    <input class="text input add-task-input-time" type="number" placeholder="Minutes" >
+                                    <input id="hours-input" class="text input add-task-input-time" type="number" placeholder="Hours" >
+                                    <input id="minutes-input" class="text input add-task-input-time" type="number" placeholder="Minutes" >
                                     <details>
                                         <summary class="dropdown-btn text">Studying</summary>
                                         <div class="content">
@@ -76,18 +80,11 @@
                             
 
                             <div class="action-buttons-container">
-                                <button class="btn action-buttons save">Save</button>
+                                <button onclick="saveActivity()" class="btn action-buttons save">Save</button>
                                 <button class="btn action-buttons">Cancel</button>
                             </div>
                             
                         </div>
-                    </div>
-
-                    <div class="registred-tasks">
-                        <p class="text">Studying</p>
-                        <p class="text">Program 2h 9min</p>
-                        <p class="text">Leisure</p>
-                        <p class="text">Play video games 4h 12min</p>
                     </div>
                 </div>
             </div>

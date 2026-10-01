@@ -62,7 +62,7 @@ h2 {
 }
 
 .container {
-    gap: 35px;
+    gap: 30px;
     width: 100%;
     min-height: 100vh;
     background: linear-gradient(to top, #0b0214, #160038);
@@ -156,7 +156,7 @@ span {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    padding: 25px;
+    padding: 20px;
     background: linear-gradient(to bottom, rgb(32, 0, 51), rgb(15, 0, 26));
     border-radius: 10px;
     box-shadow: 3px 3px 5px #0b0016;
@@ -166,7 +166,8 @@ span {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 35px;
+    height: 3rem;
+    border-bottom: solid 1.5px #5f00b8;
 }
 
 .tasksbtn {
@@ -181,7 +182,6 @@ span {
 }
 
 .registred-tasks {
-    border-top: solid 1.5px #5f00b8;
     margin-top: 10px;
 }
 
@@ -287,6 +287,7 @@ input[type="number"] {
     flex-direction: column;
     margin-top: 6px;
     border: solid 1px hsl(271, 100%, 45%);
+    box-shadow: 3px 3px 5px #0b0016;
 }
 
 .content button {
