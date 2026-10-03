@@ -65,6 +65,10 @@ function saveActivity () {
     const hours = document.getElementById("hours-input");
     const minutes = document.getElementById("minutes-input")
 
+    if (activityNameInput.value === "" || hours.value === "", minutes.value === "") {
+        return;
+    }
+
     const activity = {
         "name": activityNameInput.value,
         "hours": hours.value,
@@ -72,7 +76,11 @@ function saveActivity () {
         "classification": dropdownButton.textContent
     };
 
-    const jsonString = JSON.stringify(activity);
+    const list = JSON.parse(localStorage.getItem('habit')) || [];
+
+    list.push(activity);
+
+    const jsonString = JSON.stringify(list);
 
     localStorage.setItem("habit", jsonString)
     
@@ -84,38 +92,52 @@ function saveActivity () {
 };
 
 function loadActivity () {
-    const registredTasks = document.querySelector('.registred-tasks');
+    if (localStorage.getItem('habit') !== null) {
+        const registredTasks = document.querySelector('.registred-tasks');
 
-    list = JSON.parse(localStorage.getItem('habit')) || [];
+        registredTasks.innerHTML = '';
+        
+        let list = JSON.parse(localStorage.getItem('habit')) || [];
+        list.forEach(activity => {
+            let p = document.createElement('p');
+            p.classList.add('text');
+            p.textContent = activity.name;
+            registredTasks.append(p);
 
-    let p = document.createElement('p');
-    p.classList.add('text');
-    p.textContent = list.classification;
-    registredTasks.append(p);
+            p = document.createElement('p');
 
+            p.classList.add('text');
+            p.classList.add('activity');
+            
+            if (activity.hours === "") {
+                p.textContent = `${activity.minutes}min`;
+            }
 
-    p = document.createElement('p');
+            else if (activity.minutes === "") {
+                p.textContent = `${activity.hours}h `;  
+            }
 
-    p.classList.add('text');
-    p.textContent = `${list.name} ${list.hours}h  ${list.minutes}min`;
-    registredTasks.append(p);
+            if (activity.hours !== "" && activity.minutes !== "") {
+                p.textContent = `${activity.hours}h  ${activity.minutes}min`;
+            }
 
+            registredTasks.append(p);
+    });
+};
 };
 
 function findVisibleSection () {
     return [...sections].find(section => !section.classList.contains('hide'));
 }
 
-function switchSection () {
-    headerButtons.forEach((btn, btnIndex) => {
-        btn.addEventListener('click', event => {
-            if (sections[btnIndex].classList.contains('hide')) {;
-                findVisibleSection().classList.add('hide');
-                sections[btnIndex].classList.remove('hide');
-            };
-        });
+headerButtons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+        if (sections[index].classList.contains('hide')) {
+            findVisibleSection().classList.add('hide');
+            sections[index].classList.remove('hide');
+        };
     });
-};
+});
 
 let timer = null;
 let startTime = 0;

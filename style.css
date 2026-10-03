@@ -184,6 +184,9 @@ span {
 .registred-tasks {
     margin-top: 10px;
 }
+.activity {
+    color: gray;
+}
 
 .add-task-overlay {
     display: flex;
