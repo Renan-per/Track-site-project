@@ -91,6 +91,9 @@ function saveActivity () {
     loadActivity();
 };
 
+let hours = 0;
+let minutes = 0;
+
 function loadActivity () {
     if (localStorage.getItem('habit') !== null) {
         const registredTasks = document.querySelector('.registred-tasks');
@@ -111,18 +114,34 @@ function loadActivity () {
             
             if (activity.hours === "") {
                 p.textContent = `${activity.minutes}min`;
+                minutes = minutes + parseInt(activity.minutes);
             }
 
             else if (activity.minutes === "") {
-                p.textContent = `${activity.hours}h `;  
+                p.textContent = `${activity.hours}h `;
+                hours = hours + parseInt(activity.hours);
             }
 
             if (activity.hours !== "" && activity.minutes !== "") {
                 p.textContent = `${activity.hours}h  ${activity.minutes}min`;
+                hours = hours + parseInt(activity.hours);
+                minutes = minutes + parseInt(activity.minutes);
+            }
+
+            if (minutes >= 60) {
+                minutes = minutes - 60
+                hours++
             }
 
             registredTasks.append(p);
+
     });
+
+    const registredTime = document.querySelector(".registred-time");
+    registredTime.textContent = `${hours}h ${minutes}min registred`;
+
+    hours = 0;
+    minutes = 0;
 };
 };
 
@@ -182,5 +201,31 @@ function showAddTaks () {
         addTaskOverlay.classList.add('hide');
     };
 };
+
+//finish the logic of when the user type nothing in either hours or minutes it counts as well
+
+const inputHours = document.getElementById("hours-input")
+
+inputHours.addEventListener('input', () => {
+    if (inputHours.value <= 0) {
+        inputHours.value = "";
+    }
+
+    else if (inputHours.value >= 24) {
+        inputHours.value = 24;
+    };
+});
+
+const inputMinutes = document.getElementById("minutes-input")
+
+inputMinutes.addEventListener('input', () => {
+    if (inputMinutes.value <= 0) {
+        inputMinutes.value = "";
+    }
+    
+    else if (inputMinutes.value >= 60) {
+        inputMinutes.value = 60;
+    };
+});
 
 loadActivity();
