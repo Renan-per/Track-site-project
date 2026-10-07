@@ -1,61 +1,93 @@
 const date = new Date();
-let year = date.getFullYear();
+const year = date.getFullYear();
 const month = date.getMonth();
-const dayOfMonth = date.getDate();
+let weekDay = date.getDay();
+if (weekDay === 0) {
+    weekDay += 1;
+}
+
+else if (weekDay >= 1) {
+    weekDay += 1;
+}
+
+const day = date.getDate();
 const calendarYear = document.querySelector(".calendar-header h2");
 
 const headerButtons = document.querySelectorAll(".header-btn");
 const sections = document.querySelectorAll(".section");
 
 const display = document.querySelector(".chronometer-div p");
-let monthName = date.toLocaleDateString('en-us', { month: 'long' });
-let weekName = date.toLocaleDateString('en-us', { weekday: 'long' });
-
-calendarYear.textContent = `${monthName} ${year}`;
 
 const days = document.querySelector(".days");
-const numberOfDaysInMonth = new Date(year, month + 1, 0).getDate();
+
 const tasksHeader = document.querySelector(".tasks-header p");
 
-for (let i = 1; i <= numberOfDaysInMonth; i++) {
-    const numberDay = document.createElement("span");
-    let newDate = new Date(year, month, i);
-    let dayOfWeek = newDate.getDay();
+let id = 0;
 
-    if (i === 1) {
+const numberOfDaysInMonth = new Date(year, month +1 , 0).getDate();
+
+for (let i = 1; i <= numberOfDaysInMonth + weekDay; i++) {
+    const numberDay = document.createElement("span");
+    
+    let newDate = new Date(year, month, i);
+    let monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
+    let weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
+
+    if (i === day) {
+        tasksHeader.textContent = `${weekName}, ${i} ${monthName}`;
+        calendarYear.textContent = `${monthName} ${year}`;
+    };
+
+    if (i <= weekDay) {
         numberDay.classList.add('spacing')
     };
     
     if (!numberDay.classList.contains('spacing')) {
-        numberDay.textContent = i;
+        if (i === weekDay) {
+            numberDay.textContent = i;
+        }
+
+        else {
+            numberDay.textContent = i - weekDay;
+        };
+        
         numberDay.classList.add("days-boxes");
         numberDay.classList.add("text");
     };
-    
 
     numberDay.addEventListener("click", () => {
+        id = `${month +1}${i - weekDay}${year}`
+
+        newDate = new Date(year, month, i - weekDay);
+
+        loadActivity ()
 
         const allSpan = document.querySelectorAll(".days-boxes");
+
         allSpan.forEach(span => {span.classList.remove('selected')});
         numberDay.classList.add('selected');
+        
+
         monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
         weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
-        tasksHeader.textContent = `${weekName}, ${i} ${monthName}`;
-        calendarYear.textContent = `${monthName} ${year}`;
-    });
-    days.append(numberDay);
-    if (i === dayOfMonth) {
-        numberDay.classList.add("selected");
-    };
-};
 
-tasksHeader.textContent = `${weekName}, ${dayOfMonth} ${monthName}`;
+        tasksHeader.textContent = `${weekName}, ${i - weekDay} ${monthName}`;
+        calendarYear.textContent = `${monthName} ${year}`;
+
+
+    });
+
+    days.append(numberDay);
+    
+    if (i === day + weekDay) {
+        numberDay.classList.add("selected");};
+};
 
 const dropdownButton = document.querySelector(".dropdown-btn");
 const allDropdownButtons = document.querySelectorAll(".content button");
 
 allDropdownButtons.forEach((btn) => {
-    btn.addEventListener('click', event => {
+    btn.addEventListener('click', () => {
         dropdownButton.textContent = btn.textContent;
     });
 });
@@ -65,15 +97,20 @@ function saveActivity () {
     const hours = document.getElementById("hours-input");
     const minutes = document.getElementById("minutes-input")
 
-    if (activityNameInput.value === "" || hours.value === "", minutes.value === "") {
-        return;
-    }
+    if (id === 0) {
+        id = `${month +1}${day}${year}`
+    };
 
+    if (activityNameInput.value === "" || hours.value === "" && minutes.value === "") {
+        return;
+    };
+    
     const activity = {
         "name": activityNameInput.value,
         "hours": hours.value,
         "minutes": minutes.value,
-        "classification": dropdownButton.textContent
+        "classification": dropdownButton.textContent,
+        "id": id,
     };
 
     const list = JSON.parse(localStorage.getItem('habit')) || [];
@@ -96,46 +133,57 @@ let minutes = 0;
 
 function loadActivity () {
     if (localStorage.getItem('habit') !== null) {
+        if (id === 0) {
+            id = `${month +1}${day}${year}`
+        };
+
         const registredTasks = document.querySelector('.registred-tasks');
 
         registredTasks.innerHTML = '';
         
-        let list = JSON.parse(localStorage.getItem('habit')) || [];
-        list.forEach(activity => {
-            let p = document.createElement('p');
-            p.classList.add('text');
-            p.textContent = activity.name;
-            registredTasks.append(p);
+        const list = JSON.parse(localStorage.getItem('habit')) || [];
 
-            p = document.createElement('p');
+        list.find(object => {
+            if (object.id === id) {
+                
+                let p = document.createElement('p');
+                p.classList.add('text');
+                p.textContent = object.name;
+                registredTasks.append(p);
 
-            p.classList.add('text');
-            p.classList.add('activity');
-            
-            if (activity.hours === "") {
-                p.textContent = `${activity.minutes}min`;
-                minutes = minutes + parseInt(activity.minutes);
-            }
+                p = document.createElement('p');
 
-            else if (activity.minutes === "") {
-                p.textContent = `${activity.hours}h `;
-                hours = hours + parseInt(activity.hours);
-            }
+                p.classList.add('text');
+                p.classList.add('object');
+                
+                if (object.hours !== "" && object.minutes !== "") {
+                    p.textContent = `${object.hours}h  ${object.minutes}min`;
+                    hours = hours + parseInt(object.hours);
+                    minutes = minutes + parseInt(object.minutes);
+                }
 
-            if (activity.hours !== "" && activity.minutes !== "") {
-                p.textContent = `${activity.hours}h  ${activity.minutes}min`;
-                hours = hours + parseInt(activity.hours);
-                minutes = minutes + parseInt(activity.minutes);
-            }
+                else if (object.hours === "" && object.minutes === "") {
+                    p.textContent = "";
+                }
 
-            if (minutes >= 60) {
-                minutes = minutes - 60
-                hours++
-            }
+                else if (object.hours === "") {
+                    p.textContent = `${object.minutes}min`;
+                    minutes = minutes + parseInt(object.minutes);
+                }
 
-            registredTasks.append(p);
+                else if (object.minutes === "") {
+                    p.textContent = `${object.hours}h `;
+                    hours = hours + parseInt(object.hours);
+                };
 
-    });
+                if (minutes >= 60) {
+                    minutes = minutes - 60
+                    hours++
+                };
+
+                registredTasks.append(p);
+                };
+        });
 
     const registredTime = document.querySelector(".registred-time");
     registredTime.textContent = `${hours}h ${minutes}min registred`;
@@ -201,8 +249,6 @@ function showAddTaks () {
         addTaskOverlay.classList.add('hide');
     };
 };
-
-//finish the logic of when the user type nothing in either hours or minutes it counts as well
 
 const inputHours = document.getElementById("hours-input")
 
