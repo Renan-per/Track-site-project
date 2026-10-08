@@ -1,14 +1,9 @@
+let tentativa = 0;
 const date = new Date();
-const year = date.getFullYear();
-const month = date.getMonth();
-let weekDay = date.getDay();
-if (weekDay === 0) {
-    weekDay += 1;
-}
 
-else if (weekDay >= 1) {
-    weekDay += 1;
-}
+let year = date.getFullYear();
+let month = date.getMonth();
+
 
 const day = date.getDate();
 const calendarYear = document.querySelector(".calendar-header h2");
@@ -24,64 +19,93 @@ const tasksHeader = document.querySelector(".tasks-header p");
 
 let id = 0;
 
-const numberOfDaysInMonth = new Date(year, month +1 , 0).getDate();
-
-for (let i = 1; i <= numberOfDaysInMonth + weekDay; i++) {
-    const numberDay = document.createElement("span");
+function test (tentativa) {
+    let newDate = new Date(year, month +tentativa, 1);
     
-    let newDate = new Date(year, month, i);
-    let monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
-    let weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
+    year = newDate.getFullYear();
+    month = newDate.getMonth();
 
-    if (i === day) {
-        tasksHeader.textContent = `${weekName}, ${i} ${monthName}`;
-        calendarYear.textContent = `${monthName} ${year}`;
-    };
+    let weekDay = newDate.getDay(); 
 
-    if (i <= weekDay) {
-        numberDay.classList.add('spacing')
-    };
+    if (weekDay === 1) {
+        weekDay = 1
+    }   
+
+    const numberOfDaysInMonth = new Date(year, month +1 +tentativa, 0).getDate();
     
-    if (!numberDay.classList.contains('spacing')) {
-        if (i === weekDay) {
-            numberDay.textContent = i;
-        }
+    for (let i = 1; i <= numberOfDaysInMonth + weekDay; i++) {
+        const numberDay = document.createElement("span");
 
-        else {
-            numberDay.textContent = i - weekDay;
+
+        let monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
+        let weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
+
+        if (i === day) {
+            tasksHeader.textContent = `${weekName}, ${i} ${monthName}`;
+            calendarYear.textContent = `${monthName} ${year}`;
+        };
+
+        if (weekDay !== 0 && i <= weekDay) {
+            numberDay.classList.add('spacing')
         };
         
-        numberDay.classList.add("days-boxes");
-        numberDay.classList.add("text");
+        if (!numberDay.classList.contains('spacing')) {
+            if (i === weekDay) {
+                numberDay.textContent = i;
+            }
+
+            else {
+                numberDay.textContent = i - weekDay;
+            };
+            
+            numberDay.classList.add("days-boxes");
+            numberDay.classList.add("text");
+        };
+
+        numberDay.addEventListener("click", () => {
+            id = `${month +1}${i - weekDay}${year}`
+
+            loadActivity ()
+
+            const allSpan = document.querySelectorAll(".days-boxes");
+
+            allSpan.forEach(span => {span.classList.remove('selected')});
+            numberDay.classList.add('selected');
+            
+
+            monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
+            weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
+
+            tasksHeader.textContent = `${weekName}, ${i - weekDay} ${monthName}`;
+            calendarYear.textContent = `${monthName} ${year}`;
+        });
+
+        days.append(numberDay);
+        
+        if (i === day + weekDay) {
+            numberDay.classList.add("selected");
+        };
+    };
+};
+
+switchbutton = document.querySelectorAll(".calendar-header-btn");
+
+switchbutton.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+        if (index === 0) {
+        tentativa--
+    }
+    
+    else {
+        tentativa++
     };
 
-    numberDay.addEventListener("click", () => {
-        id = `${month +1}${i - weekDay}${year}`
-
-        newDate = new Date(year, month, i - weekDay);
-
-        loadActivity ()
-
-        const allSpan = document.querySelectorAll(".days-boxes");
-
-        allSpan.forEach(span => {span.classList.remove('selected')});
-        numberDay.classList.add('selected');
-        
-
-        monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
-        weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
-
-        tasksHeader.textContent = `${weekName}, ${i - weekDay} ${monthName}`;
-        calendarYear.textContent = `${monthName} ${year}`;
-
-
+    days.innerHTML = "";
+    test(tentativa);
+    tentativa = 0;
     });
 
-    days.append(numberDay);
-    
-    if (i === day + weekDay) {
-        numberDay.classList.add("selected");};
-};
+});
 
 const dropdownButton = document.querySelector(".dropdown-btn");
 const allDropdownButtons = document.querySelectorAll(".content button");
@@ -158,8 +182,8 @@ function loadActivity () {
                 
                 if (object.hours !== "" && object.minutes !== "") {
                     p.textContent = `${object.hours}h  ${object.minutes}min`;
-                    hours = hours + parseInt(object.hours);
-                    minutes = minutes + parseInt(object.minutes);
+                    hours += parseInt(object.hours);
+                    minutes += minutes + parseInt(object.minutes);
                 }
 
                 else if (object.hours === "" && object.minutes === "") {
@@ -220,8 +244,8 @@ function start () {
 };
 //finish clear logic
 function clear () {
-    console.log("a")
-}
+    console.log("a");
+};
 
 function update () {
     const currentTime = Date.now();
@@ -275,3 +299,4 @@ inputMinutes.addEventListener('input', () => {
 });
 
 loadActivity();
+test(tentativa);
