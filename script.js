@@ -1,4 +1,19 @@
-let tentativa = 0;
+const headerButtons = document.querySelectorAll(".header-btn");
+const sections = document.querySelectorAll(".section");
+
+function findVisibleSection () {
+    return [...sections].find(section => !section.classList.contains('hide'));
+}
+
+headerButtons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+        if (sections[index].classList.contains('hide')) {
+            findVisibleSection().classList.add('hide');
+            sections[index].classList.remove('hide');
+        };
+    });
+});
+
 const date = new Date();
 
 let year = date.getFullYear();
@@ -8,83 +23,83 @@ let month = date.getMonth();
 const day = date.getDate();
 const calendarYear = document.querySelector(".calendar-header h2");
 
-const headerButtons = document.querySelectorAll(".header-btn");
-const sections = document.querySelectorAll(".section");
-
-const display = document.querySelector(".chronometer-div p");
-
-const days = document.querySelector(".days");
-
 const tasksHeader = document.querySelector(".tasks-header p");
 
 let id = 0;
 
-function test (tentativa) {
-    let newDate = new Date(year, month +tentativa, 1);
-    
+const days = document.querySelector(".days");
+
+function renderCalendar () {
+    let newDate = new Date(year, month, 1);
+
     year = newDate.getFullYear();
     month = newDate.getMonth();
 
-    let weekDay = newDate.getDay(); 
+    const firstDayofWeek = newDate.getDay();
 
-    if (weekDay === 1) {
-        weekDay = 1
-    }   
+    for (let i = 1; i <= firstDayofWeek; i++) {
+        const blankSpace = document.createElement("span");
+        blankSpace.classList.add('spacing')
 
-    const numberOfDaysInMonth = new Date(year, month +1 +tentativa, 0).getDate();
-    
-    for (let i = 1; i <= numberOfDaysInMonth + weekDay; i++) {
-        const numberDay = document.createElement("span");
+        blankSpace.textContent = i;
 
+        days.append(blankSpace);
+
+    };
+
+    const numberOfDaysInMonth = new Date(year, month +1, 0).getDate();
+
+    for (let j = 1; j <= numberOfDaysInMonth; j++) {
+        const dayElement = document.createElement("span");
+        dayElement.classList.add('days-boxes');
+        dayElement.classList.add('text');
+
+        dayElement.textContent = j;
+
+        days.append(dayElement);
+
+        let dayToSelect;
+
+        if (year === date.getFullYear() && month === date.getMonth()) {
+            dayToSelect = day;
+        }
+
+        else {
+            dayToSelect = 1;
+        }
 
         let monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
         let weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
 
-        if (i === day) {
-            tasksHeader.textContent = `${weekName}, ${i} ${monthName}`;
-            calendarYear.textContent = `${monthName} ${year}`;
-        };
+        if (dayElement.textContent === `${dayToSelect}`) {
+            dayElement.classList.add('selected');
+            id = `${month +1}/${j}/${year}`
 
-        if (weekDay !== 0 && i <= weekDay) {
-            numberDay.classList.add('spacing')
-        };
-        
-        if (!numberDay.classList.contains('spacing')) {
-            if (i === weekDay) {
-                numberDay.textContent = i;
-            }
-
-            else {
-                numberDay.textContent = i - weekDay;
-            };
+            tasksHeader.textContent = `${weekName}, ${j} ${monthName}`;
             
-            numberDay.classList.add("days-boxes");
-            numberDay.classList.add("text");
+            loadActivity ()
         };
 
-        numberDay.addEventListener("click", () => {
-            id = `${month +1}${i - weekDay}${year}`
+        calendarYear.textContent = `${monthName} ${year}`;
+        
+
+        dayElement.addEventListener("click", () => {
+            id = `${month +1}/${j}/${year}`
 
             loadActivity ()
-
-            const allSpan = document.querySelectorAll(".days-boxes");
-
-            allSpan.forEach(span => {span.classList.remove('selected')});
-            numberDay.classList.add('selected');
-            
 
             monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
             weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
 
-            tasksHeader.textContent = `${weekName}, ${i - weekDay} ${monthName}`;
+            tasksHeader.textContent = `${weekName}, ${j} ${monthName}`;
             calendarYear.textContent = `${monthName} ${year}`;
-        });
+            
+            let selectedDay = document.querySelector('.selected');
 
-        days.append(numberDay);
-        
-        if (i === day + weekDay) {
-            numberDay.classList.add("selected");
-        };
+            selectedDay.classList.remove('selected')
+
+            dayElement.classList.add('selected');
+        });
     };
 };
 
@@ -93,18 +108,16 @@ switchbutton = document.querySelectorAll(".calendar-header-btn");
 switchbutton.forEach((btn, index) => {
     btn.addEventListener('click', () => {
         if (index === 0) {
-        tentativa--
-    }
-    
-    else {
-        tentativa++
-    };
+            month--
+        }
 
-    days.innerHTML = "";
-    test(tentativa);
-    tentativa = 0;
+        else {
+            month++
+        };
+
+        days.innerHTML = "";
+        renderCalendar();
     });
-
 });
 
 const dropdownButton = document.querySelector(".dropdown-btn");
@@ -122,7 +135,7 @@ function saveActivity () {
     const minutes = document.getElementById("minutes-input")
 
     if (id === 0) {
-        id = `${month +1}${day}${year}`
+        id = `${month +1}/${day}/${year}`
     };
 
     if (activityNameInput.value === "" || hours.value === "" && minutes.value === "") {
@@ -158,7 +171,7 @@ let minutes = 0;
 function loadActivity () {
     if (localStorage.getItem('habit') !== null) {
         if (id === 0) {
-            id = `${month +1}${day}${year}`
+            id = `${month +1}/${day}/${year}`;
         };
 
         const registredTasks = document.querySelector('.registred-tasks');
@@ -217,53 +230,6 @@ function loadActivity () {
 };
 };
 
-function findVisibleSection () {
-    return [...sections].find(section => !section.classList.contains('hide'));
-}
-
-headerButtons.forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-        if (sections[index].classList.contains('hide')) {
-            findVisibleSection().classList.add('hide');
-            sections[index].classList.remove('hide');
-        };
-    });
-});
-
-let timer = null;
-let startTime = 0;
-let elapsedTime = 0;
-let isRunning = false;
-
-function start () {
-    if(!isRunning) {
-        startTime = Date.now() - elapsedTime;
-        timer = setInterval(update, 10);
-        isRunning = true;
-    };
-};
-//finish clear logic
-function clear () {
-    console.log("a");
-};
-
-function update () {
-    const currentTime = Date.now();
-    elapsedTime = currentTime - startTime;
-
-    let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-    let minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
-    let seconds = Math.floor(elapsedTime / 1000 % 60);
-    let milliseconds = Math.floor(elapsedTime % 1000 / 10);
-
-    hours = String(hours).padStart(2, "0");
-    minutes = String(minutes).padStart(2, "0");
-    seconds = String(seconds).padStart(2, "0");
-    milliseconds = String(milliseconds).padStart(2, "0");
-
-    display.textContent = `${hours}:${minutes}:${seconds}:${milliseconds}`;
-}
-
 const addTaskOverlay = document.querySelector(".add-task-overlay");
 function showAddTaks () {
     if (addTaskOverlay.classList.contains('hide')) {
@@ -298,5 +264,57 @@ inputMinutes.addEventListener('input', () => {
     };
 });
 
+const display = document.querySelector(".chronometer-div p");
+
+let timer = null;
+let startTime = 0;
+let elapsedTime = 0;
+let isRunning = false;
+
+function start () {
+    if(!isRunning) {
+        startTime = Date.now() - elapsedTime;
+        timer = setInterval(update, 10);
+        isRunning = true;
+    };
+};
+
+function stop () {
+    if (isRunning) {
+        clearInterval(timer);
+        elapsedTime = Date.now() - startTime;
+        isRunning = false;
+    }
+}
+
+function reset () {
+    clearInterval(timer);
+    startTime = 0;    
+    elapsedTime = 0;  
+    isRunning = false;
+
+    display.textContent = "00:00:00:00"
+};
+
+function update () {
+    const currentTime = Date.now();
+    elapsedTime = currentTime - startTime;
+
+    let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+    let minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
+    let seconds = Math.floor(elapsedTime / 1000 % 60);
+    let milliseconds = Math.floor(elapsedTime % 1000 / 10);
+
+    hours = String(hours).padStart(2, "0");
+    minutes = String(minutes).padStart(2, "0");
+    seconds = String(seconds).padStart(2, "0");
+    milliseconds = String(milliseconds).padStart(2, "0");
+
+    display.textContent = `${hours}:${minutes}:${seconds}:${milliseconds}`;
+}
+
+const chronometerInput = document.getElementById('chronometer-input')
+
+
 loadActivity();
-test(tentativa);
+renderCalendar();
