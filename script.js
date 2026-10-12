@@ -120,12 +120,14 @@ switchbutton.forEach((btn, index) => {
     });
 });
 
-const dropdownButton = document.querySelector(".dropdown-btn");
+const dropdownButton = document.querySelectorAll(".dropdown-btn");
 const allDropdownButtons = document.querySelectorAll(".content button");
 
-allDropdownButtons.forEach((btn) => {
+allDropdownButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-        dropdownButton.textContent = btn.textContent;
+        dropdownButton.forEach((a, index) => {
+            a.textContent = btn.textContent
+        });
     });
 });
 
@@ -314,7 +316,6 @@ function update () {
 }
 
 const chronometerInput = document.getElementById('chronometer-input')
-
 
 loadActivity();
 renderCalendar();

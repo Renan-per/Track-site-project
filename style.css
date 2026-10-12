@@ -194,7 +194,6 @@ span {
     align-items: center;
     position: fixed;
     inset: 0;
-    
 }
 
 .add-task-box {
@@ -255,7 +254,7 @@ input[type="number"] {
 }
 
 .add-task-input {
-    width: 20rem;
+    width: 22rem;
     height: 3rem;
 }
 
@@ -382,12 +381,29 @@ input[type="number"] {
     justify-content: center;
 }
 
-.chronometer-input {
+#chronometer-input {
     width: clamp(30vw, 30vw, 30vw);
-    height: clamp(2.5vw, 1vw, 1vw);
+    height: clamp(3vw, 1vw, 1vw);
     padding: 4px 14px;
     border: solid 1px #8400ff;
     background-color: #160038;
+}
+
+.chronometer-div-input details {
+    position: relative;
+    display: flex;
+}
+
+.chronometer-div-input details summary {
+    position: absolute;
+    right: 0;
+    height: clamp(3vw, 1vw, 1vw);
+}
+
+.chronometer-div-input details div {
+    position: absolute;
+    top: 100%;
+    right: 0;
 }
 
 .chronometer-div-btn {

@@ -61,7 +61,7 @@
                         <div class="add-task-box">
                             <button onclick="showAddTaks()" class="bi bi-x-lg"></button>
                             <div class="input-buttons-container">
-                                <input id="activity-name-input" class="text input add-task-input" type="text" placeholder="Current activity name">
+                                <input id="activity-name-input" class="text input add-task-input" type="text" placeholder="Current activity">
                                 <div class="time-dropdown-container">
                                     <input id="hours-input" class="text input add-task-input-time" type="number" placeholder="Hours" >
                                     <input id="minutes-input" class="text input add-task-input-time" type="number" placeholder="Minutes" >
@@ -72,17 +72,14 @@
                                             <button class="text">Leisure</button>
                                             <button class="text">Workout</button>
                                         </div>
-                                    </details>                                    
+                                    </details>                                  
                                 </div>  
                             </div>
-
-                            
 
                             <div class="action-buttons-container">
                                 <button onclick="saveActivity()" class="btn action-buttons save">Save</button>
                                 <button class="btn action-buttons">Cancel</button>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -98,9 +95,7 @@
                 <figure>
                     <div class="pie"></div>
                 </figure>
-            </div>
-            
-        </div>
+            </div></div>
     </section>
 
     <section class="chronometer-section section hide">
@@ -110,7 +105,15 @@
                 <p class="text">00:00:00:00</p>
             </div>
             <div class="chronometer-div-input">
-                <input id="chronometer-input" class="text input chronometer-input" type="text" placeholder="current activity">
+                <input id="chronometer-input" class="text input add-task-input" type="text" placeholder="current activity">
+                <details>
+                    <summary class="dropdown-btn text">Studying</summary>
+                    <div class="content">
+                        <button class="text">Working</button>
+                        <button class="text">Leisure</button>
+                        <button class="text">Workout</button>
+                    </div>
+                </details> 
             </div>
             <div class="chronometer-div-btn">
                 <button onclick="start()" class="bi bi-play-fill chronometer-btn"></button>
