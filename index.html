@@ -106,18 +106,24 @@
             </div>
             <div class="chronometer-div-input">
                 <input id="chronometer-input" class="text input add-task-input" type="text" placeholder="current activity">
-                <details>
-                    <summary class="dropdown-btn text">Studying</summary>
-                    <div class="content">
-                        <button class="text">Working</button>
-                        <button class="text">Leisure</button>
-                        <button class="text">Workout</button>
-                    </div>
-                </details> 
+
+                <div class="buttons-container">
+                    <button class="btn tasksbtn hide">Save</button>
+                    
+                    <details>
+                        <summary class="dropdown-btn text">Studying</summary>
+                        <div class="content">
+                            <button class="text">Working</button>
+                            <button class="text">Leisure</button>
+                            <button class="text">Workout</button>
+                        </div>
+                    </details> 
+                </div>
+
             </div>
             <div class="chronometer-div-btn">
-                <button onclick="start()" class="bi bi-play-fill chronometer-btn"></button>
-                <button onclick="stop()" class="bi bi-arrow-clockwise chronometer-btn"></button>             
+                <button class="bi bi-play-fill chronometer-btn"></button>
+                <button onclick="reset()" class="bi bi-arrow-clockwise chronometer-btn"></button>             
             </div>
         </div>
     </section>

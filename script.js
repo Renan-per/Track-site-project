@@ -131,23 +131,23 @@ allDropdownButtons.forEach(btn => {
     });
 });
 
-function saveActivity () {
-    const activityNameInput = document.getElementById("activity-name-input")
-    const hours = document.getElementById("hours-input");
-    const minutes = document.getElementById("minutes-input")
+let activityNameInput = document.getElementById("activity-name-input")
+let hoursInput = document.getElementById("hours-input");
+let minutesInput = document.getElementById("minutes-input")
 
+function saveActivity () {
     if (id === 0) {
         id = `${month +1}/${day}/${year}`
     };
 
-    if (activityNameInput.value === "" || hours.value === "" && minutes.value === "") {
+    if (activityNameInput.value === "" || hoursInput.value === "" && minutesInput.value === "") {
         return;
     };
     
     const activity = {
         "name": activityNameInput.value,
-        "hours": hours.value,
-        "minutes": minutes.value,
+        "hours": hoursInput.value,
+        "minutes": minutesInput.value,
         "classification": dropdownButton.textContent,
         "id": id,
     };
@@ -161,8 +161,8 @@ function saveActivity () {
     localStorage.setItem("habit", jsonString)
     
     activityNameInput.value = "";
-    hours.value = "";
-    minutes.value = "";
+    hoursInput.value = "";
+    minutesInput.value = "";
 
     loadActivity();
 };
@@ -273,15 +273,36 @@ let startTime = 0;
 let elapsedTime = 0;
 let isRunning = false;
 
+const startButton = document.querySelector('.bi-play-fill')
+const activityDropdown = document.querySelector('.buttons-container details summary')
+const saveTask = document.querySelector('.buttons-container button')
+
 function start () {
     if(!isRunning) {
+        startButton.removeEventListener('click', stop)
         startTime = Date.now() - elapsedTime;
         timer = setInterval(update, 10);
         isRunning = true;
+
+        activityDropdown.classList.add('hide')
+        
+        saveTask.classList.remove('hide')
+        
+        startButton.classList.add('bi-pause-fill')
+        startButton.classList.remove('bi-play-fill')
+
+        startButton.addEventListener('click', stop)
     };
 };
 
+startButton.addEventListener('click', start);
+
+
 function stop () {
+    const semnome = document.querySelector('.bi-pause-fill')
+    semnome.classList.add('bi-play-fill')
+    semnome.classList.remove('bi-pause-fill')
+
     if (isRunning) {
         clearInterval(timer);
         elapsedTime = Date.now() - startTime;
@@ -290,20 +311,30 @@ function stop () {
 }
 
 function reset () {
+    const semnome = document.querySelector('.bi-pause-fill');
+
+    if (semnome !== null) {
+        semnome.classList.add('bi-play-fill');
+        semnome.classList.remove('bi-pause-fill');
+    };
+
+    activityDropdown.classList.remove('hide')
+    saveTask.classList.add('hide')
+    
     clearInterval(timer);
     startTime = 0;    
     elapsedTime = 0;  
     isRunning = false;
 
-    display.textContent = "00:00:00:00"
+    display.textContent = "00:00:00:00";
 };
 
 function update () {
     const currentTime = Date.now();
     elapsedTime = currentTime - startTime;
 
-    let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-    let minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
+    hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+    minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
     let seconds = Math.floor(elapsedTime / 1000 % 60);
     let milliseconds = Math.floor(elapsedTime % 1000 / 10);
 
@@ -315,7 +346,20 @@ function update () {
     display.textContent = `${hours}:${minutes}:${seconds}:${milliseconds}`;
 }
 
-const chronometerInput = document.getElementById('chronometer-input')
+
+const saveButton = document.querySelector('.buttons-container')
+
+//finish the logic of saving the hours and minutes (maybe the seconds too) the part where I need to adapt for number values, the project is almost finishing :)
+saveButton.addEventListener('click', () => {
+    reset();
+
+    activityNameInput = document.getElementById('chronometer-input');
+
+    hoursInput = hours;
+    minutesInput = minutes;
+
+    saveActivity();
+})
 
 loadActivity();
 renderCalendar();

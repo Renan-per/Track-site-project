@@ -389,14 +389,15 @@ input[type="number"] {
     background-color: #160038;
 }
 
-.chronometer-div-input details {
+.buttons-container {
     position: relative;
-    display: flex;
 }
 
-.chronometer-div-input details summary {
+.buttons-container > button,
+.buttons-container details summary {
     position: absolute;
     right: 0;
+    width: clamp(5vw, 5vw, 5vw);
     height: clamp(3vw, 1vw, 1vw);
 }
 
@@ -429,6 +430,11 @@ input[type="number"] {
 .bi-play-fill {
     font-size: clamp(4vw, 4vw, 4vw);
 }
+
+.bi-pause-fill {
+    font-size: clamp(4vw, 4vw, 4vw);
+}
+
 .bi-arrow-clockwise {
     font-size: clamp(1vw, 4vw, 4vw);
 }
