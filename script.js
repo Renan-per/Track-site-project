@@ -125,7 +125,7 @@ const allDropdownButtons = document.querySelectorAll(".content button");
 
 allDropdownButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-        dropdownButton.forEach((a, index) => {
+        dropdownButton.forEach(a => {
             a.textContent = btn.textContent
         });
     });
@@ -134,20 +134,40 @@ allDropdownButtons.forEach(btn => {
 let activityNameInput = document.getElementById("activity-name-input")
 let hoursInput = document.getElementById("hours-input");
 let minutesInput = document.getElementById("minutes-input")
+let hours = 0;
+let minutes = 0;
+
 
 function saveActivity () {
     if (id === 0) {
         id = `${month +1}/${day}/${year}`
     };
 
-    if (activityNameInput.value === "" || hoursInput.value === "" && minutesInput.value === "") {
+    if (activityNameInput.value === "") {
         return;
+    };
+
+    let hoursInputValue = null
+    let minutesInputValue = null
+
+    if (typeof hoursInput === "object" || typeof minutesInput === "object") {
+        hoursInputValue = hoursInput.value;
+        minutesInputValue = minutesInput.value;
+
+        if (hoursInput.value === "" && minutesInput.value === "") {
+            return;
+        };
+    }
+
+    else if (typeof hoursInput === "string" || typeof minutes === "string") {
+        hoursInputValue = parseInt(hoursInput).toString();
+        minutesInputValue = parseInt(minutesInput).toString();
     };
     
     const activity = {
         "name": activityNameInput.value,
-        "hours": hoursInput.value,
-        "minutes": minutesInput.value,
+        "hours": hoursInputValue,
+        "minutes": minutesInputValue,
         "classification": dropdownButton.textContent,
         "id": id,
     };
@@ -161,14 +181,14 @@ function saveActivity () {
     localStorage.setItem("habit", jsonString)
     
     activityNameInput.value = "";
-    hoursInput.value = "";
-    minutesInput.value = "";
+    hoursInputValue = "";
+    minutesInputValue = "";
+
+    hours = 0;
+    minutes = 0;
 
     loadActivity();
 };
-
-let hours = 0;
-let minutes = 0;
 
 function loadActivity () {
     if (localStorage.getItem('habit') !== null) {
@@ -198,7 +218,7 @@ function loadActivity () {
                 if (object.hours !== "" && object.minutes !== "") {
                     p.textContent = `${object.hours}h  ${object.minutes}min`;
                     hours += parseInt(object.hours);
-                    minutes += minutes + parseInt(object.minutes);
+                    minutes += parseInt(object.minutes);
                 }
 
                 else if (object.hours === "" && object.minutes === "") {
@@ -207,16 +227,16 @@ function loadActivity () {
 
                 else if (object.hours === "") {
                     p.textContent = `${object.minutes}min`;
-                    minutes = minutes + parseInt(object.minutes);
+                    minutes += parseInt(object.minutes);
                 }
 
                 else if (object.minutes === "") {
                     p.textContent = `${object.hours}h `;
-                    hours = hours + parseInt(object.hours);
+                    hours -= parseInt(object.hours);
                 };
 
                 if (minutes >= 60) {
-                    minutes = minutes - 60
+                    minutes -= 60
                     hours++
                 };
 
@@ -351,9 +371,9 @@ const saveButton = document.querySelector('.buttons-container')
 
 //finish the logic of saving the hours and minutes (maybe the seconds too) the part where I need to adapt for number values, the project is almost finishing :)
 saveButton.addEventListener('click', () => {
-    reset();
-
     activityNameInput = document.getElementById('chronometer-input');
+    
+    reset();
 
     hoursInput = hours;
     minutesInput = minutes;
