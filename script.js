@@ -123,32 +123,41 @@ switchbutton.forEach((btn, index) => {
 const dropdownButton = document.querySelectorAll(".dropdown-btn");
 const allDropdownButtons = document.querySelectorAll(".content button");
 
-allDropdownButtons.forEach(btn => {
+let dropdownBtnText;
+
+dropdownButton.forEach((btn, index) => {
+    dropdownBtnText = "Studying"
     btn.addEventListener('click', () => {
-        dropdownButton.forEach(a => {
-            a.textContent = btn.textContent
-        });
+        if (index === 0 || index === 1) {
+            allDropdownButtons.forEach(dropdownBtn => {
+                dropdownBtn.addEventListener('click', () => {
+                    btn.textContent = dropdownBtn.textContent;
+                    dropdownBtn.textContent = dropdownBtnText;
+                    dropdownBtnText = btn.textContent;
+                });
+            });
+        };
     });
 });
 
-let activityNameInput = document.getElementById("activity-name-input")
+let activityNameInput = document.getElementById("activity-name-input");
 let hoursInput = document.getElementById("hours-input");
-let minutesInput = document.getElementById("minutes-input")
+let minutesInput = document.getElementById("minutes-input");
 let hours = 0;
 let minutes = 0;
 
 
 function saveActivity () {
-    if (id === 0) {
-        id = `${month +1}/${day}/${year}`
-    };
-
     if (activityNameInput.value === "") {
         return;
     };
 
-    let hoursInputValue = null
-    let minutesInputValue = null
+    if (id === 0) {
+        id = `${month +1}/${day}/${year}`;
+    };
+
+    let hoursInputValue = null;
+    let minutesInputValue = null;
 
     if (typeof hoursInput === "object" || typeof minutesInput === "object") {
         hoursInputValue = hoursInput.value;
@@ -160,15 +169,15 @@ function saveActivity () {
     }
 
     else if (typeof hoursInput === "string" || typeof minutes === "string") {
-        hoursInputValue = parseInt(hoursInput).toString();
-        minutesInputValue = parseInt(minutesInput).toString();
+        hoursInputValue = hoursInput;
+        minutesInputValue = minutesInput;
     };
-    
+
     const activity = {
         "name": activityNameInput.value,
         "hours": hoursInputValue,
         "minutes": minutesInputValue,
-        "classification": dropdownButton.textContent,
+        "classification": dropdownBtnText,
         "id": id,
     };
 
@@ -178,8 +187,11 @@ function saveActivity () {
 
     const jsonString = JSON.stringify(list);
 
-    localStorage.setItem("habit", jsonString)
+    localStorage.setItem("habit", jsonString);
     
+    hoursInput.value = "";
+    minutesInput.value = "";
+
     activityNameInput.value = "";
     hoursInputValue = "";
     minutesInputValue = "";
@@ -236,8 +248,8 @@ function loadActivity () {
                 };
 
                 if (minutes >= 60) {
-                    minutes -= 60
-                    hours++
+                    minutes -= 60;
+                    hours++;
                 };
 
                 registredTasks.append(p);
@@ -262,7 +274,7 @@ function showAddTaks () {
     };
 };
 
-const inputHours = document.getElementById("hours-input")
+const inputHours = document.getElementById("hours-input");
 
 inputHours.addEventListener('input', () => {
     if (inputHours.value <= 0) {
@@ -274,7 +286,7 @@ inputHours.addEventListener('input', () => {
     };
 });
 
-const inputMinutes = document.getElementById("minutes-input")
+const inputMinutes = document.getElementById("minutes-input");
 
 inputMinutes.addEventListener('input', () => {
     if (inputMinutes.value <= 0) {
@@ -293,35 +305,43 @@ let startTime = 0;
 let elapsedTime = 0;
 let isRunning = false;
 
-const startButton = document.querySelector('.bi-play-fill')
-const activityDropdown = document.querySelector('.buttons-container details summary')
-const saveTask = document.querySelector('.buttons-container button')
+const startButton = document.querySelector('.bi-play-fill');
+const activityDropdown = document.querySelector('.buttons-container details summary');
+const saveTask = document.querySelector('.buttons-container button');
 
 function start () {
-    if(!isRunning) {
-        startButton.removeEventListener('click', stop)
+    activityNameInput = document.getElementById('chronometer-input');
+
+    if (activityNameInput.value === "") {
+        alert("You need to type the activity before starting the timer");
+    }
+
+    else {
+        if(!isRunning) {
+        startButton.removeEventListener('click', stop);
+
         startTime = Date.now() - elapsedTime;
         timer = setInterval(update, 10);
         isRunning = true;
 
-        activityDropdown.classList.add('hide')
+        activityDropdown.classList.add('hide');
         
-        saveTask.classList.remove('hide')
+        saveTask.classList.remove('hide');
         
-        startButton.classList.add('bi-pause-fill')
-        startButton.classList.remove('bi-play-fill')
-
-        startButton.addEventListener('click', stop)
+        startButton.classList.add('bi-pause-fill');
+        startButton.classList.remove('bi-play-fill');
+        startButton.addEventListener('click', stop);
     };
+};
 };
 
 startButton.addEventListener('click', start);
 
 
 function stop () {
-    const semnome = document.querySelector('.bi-pause-fill')
-    semnome.classList.add('bi-play-fill')
-    semnome.classList.remove('bi-pause-fill')
+    const semnome = document.querySelector('.bi-pause-fill');
+    semnome.classList.add('bi-play-fill');
+    semnome.classList.remove('bi-pause-fill');
 
     if (isRunning) {
         clearInterval(timer);
@@ -338,8 +358,8 @@ function reset () {
         semnome.classList.remove('bi-pause-fill');
     };
 
-    activityDropdown.classList.remove('hide')
-    saveTask.classList.add('hide')
+    activityDropdown.classList.remove('hide');
+    saveTask.classList.add('hide');
     
     clearInterval(timer);
     startTime = 0;    
@@ -366,20 +386,21 @@ function update () {
     display.textContent = `${hours}:${minutes}:${seconds}:${milliseconds}`;
 }
 
+const saveButton = document.querySelector('.buttons-container button')
 
-const saveButton = document.querySelector('.buttons-container')
-
-//finish the logic of saving the hours and minutes (maybe the seconds too) the part where I need to adapt for number values, the project is almost finishing :)
 saveButton.addEventListener('click', () => {
-    activityNameInput = document.getElementById('chronometer-input');
+    hoursInput = parseInt(hours).toString();
+    minutesInput = parseInt(minutes).toString();
+
+    if (minutesInput !== '0') {
+        reset();
+        saveActivity();
+    }
     
-    reset();
-
-    hoursInput = hours;
-    minutesInput = minutes;
-
-    saveActivity();
-})
+    else {
+        alert("minimum for saving is 1 minute")
+    };
+});
 
 loadActivity();
 renderCalendar();
