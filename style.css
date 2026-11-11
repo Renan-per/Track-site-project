@@ -345,19 +345,17 @@ input[type="number"] {
     background-color: rgb(32, 0, 51);
 }
 
-.pie {
-    background-image:
-    radial-gradient(
-        rgb(32, 0, 51) 40%,
-        transparent 0 70%,
-        rgb(32, 0, 51) 0
-    ),
-    conic-gradient(
-        red 40%,
-        blue 0 65%,
-        orange 0% 85%,
-        pink 0
-        );
+#pie {
+
+    --conic1: #32B5F7 0% 10.132890365448505%;
+    --conic2: #A6B4C9 10.132890365448505% 54.81727574750831%;
+    --conic3: #2ECC71 54.81727574750831% 24.916943521594686%;
+    --conic4: #DF60FA 24.916943521594686% 10.132890365448505%;
+    
+    background:
+    radial-gradient(#200033 40%, transparent 0 70%, #200033 0),
+    conic-gradient(var(--conic1),var(--conic2),var(--conic3),var(--conic4)var(--conic1),var(--conic2),var(--conic3),var(--conic4));
+
     margin-top: 20px;
     font-size: clamp(1vw, 4vw, 4vw);
     width: 400px;

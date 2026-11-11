@@ -19,6 +19,7 @@
 
     <section class="calendar-section section">
         <h1>Calendar</h1>
+
         <div class="calendar-container container">
             <div class="calendar">
                 <div class="calendar-header">
@@ -76,7 +77,7 @@
 
                             <div class="action-buttons-container">
                                 <button onclick="saveActivity()" class="btn action-buttons save">Save</button>
-                                <button class="btn action-buttons">Cancel</button>
+                                <button onclick="showAddTaks()" class="btn action-buttons">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -89,9 +90,9 @@
         <h1>Chart</h1>
         <div class="chart-container container">
             <div class="pie-chart-container">
-                <h1 class="registred-time">6h 21min</h1>
+                <h1 class="total-time"></h1>
                 <figure>
-                    <div class="pie"></div>
+                    <div id="pie"></div>
                 </figure>
             </div></div>
     </section>
@@ -116,9 +117,8 @@
                             <button class="text">Workout</button>
                         </div>
                     </details> 
-                </div>
+                </div></div>
 
-            </div>
             <div class="chronometer-div-btn">
                 <button class="bi bi-play-fill chronometer-btn"></button>
                 <button onclick="reset()" class="bi bi-arrow-clockwise chronometer-btn"></button>             

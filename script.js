@@ -1,7 +1,7 @@
 const headerButtons = document.querySelectorAll(".header-btn");
 const sections = document.querySelectorAll(".section");
 
-function findVisibleSection () {
+function findVisibleSection() {
     return [...sections].find(section => !section.classList.contains('hide'));
 }
 
@@ -29,7 +29,7 @@ let id = 0;
 
 const days = document.querySelector(".days");
 
-function renderCalendar () {
+function renderCalendar() {
     let newDate = new Date(year, month, 1);
 
     year = newDate.getFullYear();
@@ -47,7 +47,7 @@ function renderCalendar () {
 
     };
 
-    const numberOfDaysInMonth = new Date(year, month +1, 0).getDate();
+    const numberOfDaysInMonth = new Date(year, month + 1, 0).getDate();
 
     for (let j = 1; j <= numberOfDaysInMonth; j++) {
         const dayElement = document.createElement("span");
@@ -73,27 +73,25 @@ function renderCalendar () {
 
         if (dayElement.textContent === `${dayToSelect}`) {
             dayElement.classList.add('selected');
-            id = `${month +1}/${j}/${year}`
+            id = `${month + 1}/${j}/${year}`
 
             tasksHeader.textContent = `${weekName}, ${j} ${monthName}`;
-            
-            loadActivity ()
         };
 
         calendarYear.textContent = `${monthName} ${year}`;
-        
+
 
         dayElement.addEventListener("click", () => {
-            id = `${month +1}/${j}/${year}`
+            id = `${month + 1}/${j}/${year}`
 
-            loadActivity ()
+            loadActivity()
 
             monthName = newDate.toLocaleDateString('en-us', { month: 'long' });
             weekName = newDate.toLocaleDateString('en-us', { weekday: 'long' });
 
             tasksHeader.textContent = `${weekName}, ${j} ${monthName}`;
             calendarYear.textContent = `${monthName} ${year}`;
-            
+
             let selectedDay = document.querySelector('.selected');
 
             selectedDay.classList.remove('selected')
@@ -147,13 +145,13 @@ let hours = 0;
 let minutes = 0;
 
 
-function saveActivity () {
+function saveActivity() {
     if (activityNameInput.value === "") {
         return;
     };
 
     if (id === 0) {
-        id = `${month +1}/${day}/${year}`;
+        id = `${month + 1}/${day}/${year}`;
     };
 
     let hoursInputValue = null;
@@ -188,7 +186,7 @@ function saveActivity () {
     const jsonString = JSON.stringify(list);
 
     localStorage.setItem("habit", jsonString);
-    
+
     hoursInput.value = "";
     minutesInput.value = "";
 
@@ -202,21 +200,21 @@ function saveActivity () {
     loadActivity();
 };
 
-function loadActivity () {
+function loadActivity() {
     if (localStorage.getItem('habit') !== null) {
         if (id === 0) {
-            id = `${month +1}/${day}/${year}`;
+            id = `${month + 1}/${day}/${year}`;
         };
 
         const registredTasks = document.querySelector('.registred-tasks');
 
         registredTasks.innerHTML = '';
-        
+
         const list = JSON.parse(localStorage.getItem('habit')) || [];
 
         list.find(object => {
             if (object.id === id) {
-                
+
                 let p = document.createElement('p');
                 p.classList.add('text');
                 p.textContent = object.name;
@@ -226,7 +224,7 @@ function loadActivity () {
 
                 p.classList.add('text');
                 p.classList.add('object');
-                
+
                 if (object.hours !== "" && object.minutes !== "") {
                     p.textContent = `${object.hours}h  ${object.minutes}min`;
                     hours += parseInt(object.hours);
@@ -253,25 +251,19 @@ function loadActivity () {
                 };
 
                 registredTasks.append(p);
-                };
+            };
         });
+        hours = 0;
+        minutes = 0;
+    };
 
-    const registredTime = document.querySelector(".registred-time");
-    registredTime.textContent = `${hours}h ${minutes}min registred`;
-
-    hours = 0;
-    minutes = 0;
-};
+    renderChart()
 };
 
 const addTaskOverlay = document.querySelector(".add-task-overlay");
-function showAddTaks () {
-    if (addTaskOverlay.classList.contains('hide')) {
-        addTaskOverlay.classList.remove('hide');
-    }
-    else {
-        addTaskOverlay.classList.add('hide');
-    };
+
+function showAddTaks() {
+    addTaskOverlay.classList.toggle('hide');
 };
 
 const inputHours = document.getElementById("hours-input");
@@ -292,12 +284,90 @@ inputMinutes.addEventListener('input', () => {
     if (inputMinutes.value <= 0) {
         inputMinutes.value = "";
     }
-    
+
     else if (inputMinutes.value >= 60) {
         inputMinutes.value = 60;
     };
 });
 
+//chart
+
+function renderChart() {
+    const classificationAndTimeList = JSON.parse(localStorage.getItem('habit')) || [];
+
+    const timeOfActivity = [];
+
+    classificationAndTimeList.forEach(object => {
+        const time = Number(object.hours) * 60 + Number(object.minutes);
+
+        const existingClassification = timeOfActivity.find(
+            value => value.classification === object.classification
+        );
+
+        if (existingClassification) {
+            existingClassification.minutes += time;
+        } else {
+            timeOfActivity.push({
+                classification: object.classification,
+                minutes: time
+            });
+        }
+    });
+
+    let totalMinutes = 0;
+
+    classificationAndTimeList.forEach(object => {
+        totalMinutes += Number(object.hours) * 60 + Number(object.minutes);
+    });
+
+    const totalTimeOfHours = Math.floor(totalMinutes / 60);
+    const totalTimeOfMinutes = totalMinutes % 60;
+
+    const registredTime = document.querySelector(".total-time");
+
+    registredTime.textContent = `${totalTimeOfHours}h ${totalTimeOfMinutes}min`;
+
+    const total = timeOfActivity.reduce((sum, value) => {
+        return sum + value.minutes;
+    }, 0);
+
+    const percentageList = timeOfActivity.map(value => {
+        return (value.minutes / total) * 100;
+    });
+
+    const chart = document.getElementById("pie");
+
+    const obj = {
+        "Studying": "#A6B4C9",
+        "Working": "#DF60FA",
+        "Leisure": "#2ECC71",
+        "Workout": "#32B5F7"
+    }
+
+    function color(classification) {
+        return obj[classification];
+    };
+
+    let gradient = [];
+    let initialPercentage = 0;
+
+    timeOfActivity.forEach((value, index) => {
+        const percentage = percentageList[index];
+
+        gradient.push(
+            `${color(value.classification)} ${initialPercentage}% ${initialPercentage + percentage}%`
+        );
+
+        initialPercentage += percentage;
+    });
+
+    chart.style.background = `
+    radial-gradient(#200033 40%, transparent 0 70%, #200033 0),
+    conic-gradient(${gradient.join(", ")})
+`;
+};
+
+//chronometer
 const display = document.querySelector(".chronometer-div p");
 
 let timer = null;
@@ -309,7 +379,7 @@ const startButton = document.querySelector('.bi-play-fill');
 const activityDropdown = document.querySelector('.buttons-container details summary');
 const saveTask = document.querySelector('.buttons-container button');
 
-function start () {
+function start() {
     activityNameInput = document.getElementById('chronometer-input');
 
     if (activityNameInput.value === "") {
@@ -317,28 +387,28 @@ function start () {
     }
 
     else {
-        if(!isRunning) {
-        startButton.removeEventListener('click', stop);
+        if (!isRunning) {
+            startButton.removeEventListener('click', stop);
 
-        startTime = Date.now() - elapsedTime;
-        timer = setInterval(update, 10);
-        isRunning = true;
+            startTime = Date.now() - elapsedTime;
+            timer = setInterval(update, 10);
+            isRunning = true;
 
-        activityDropdown.classList.add('hide');
-        
-        saveTask.classList.remove('hide');
-        
-        startButton.classList.add('bi-pause-fill');
-        startButton.classList.remove('bi-play-fill');
-        startButton.addEventListener('click', stop);
+            activityDropdown.classList.add('hide');
+
+            saveTask.classList.remove('hide');
+
+            startButton.classList.add('bi-pause-fill');
+            startButton.classList.remove('bi-play-fill');
+            startButton.addEventListener('click', stop);
+        };
     };
-};
 };
 
 startButton.addEventListener('click', start);
 
 
-function stop () {
+function stop() {
     const semnome = document.querySelector('.bi-pause-fill');
     semnome.classList.add('bi-play-fill');
     semnome.classList.remove('bi-pause-fill');
@@ -350,7 +420,7 @@ function stop () {
     }
 }
 
-function reset () {
+function reset() {
     const semnome = document.querySelector('.bi-pause-fill');
 
     if (semnome !== null) {
@@ -360,16 +430,16 @@ function reset () {
 
     activityDropdown.classList.remove('hide');
     saveTask.classList.add('hide');
-    
+
     clearInterval(timer);
-    startTime = 0;    
-    elapsedTime = 0;  
+    startTime = 0;
+    elapsedTime = 0;
     isRunning = false;
 
     display.textContent = "00:00:00:00";
 };
 
-function update () {
+function update() {
     const currentTime = Date.now();
     elapsedTime = currentTime - startTime;
 
@@ -396,11 +466,11 @@ saveButton.addEventListener('click', () => {
         reset();
         saveActivity();
     }
-    
+
     else {
         alert("minimum for saving is 1 minute")
     };
 });
 
-loadActivity();
 renderCalendar();
+loadActivity();
